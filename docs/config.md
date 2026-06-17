@@ -13,6 +13,9 @@ The configuration file defines:
 * Size correction parameters
 * Replicate aggregation
 
+
+Important note: beside input_dir and output_dir, you dont need to change the other dir in the config file if you running the modules directly by running the workflow.py.
+The module-spesific input/output directories in the config file is only used when running the spesific module standalone. 
 ---
 
 # Workflow

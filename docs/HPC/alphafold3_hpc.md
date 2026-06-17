@@ -534,4 +534,8 @@ The HPC workflow provides substantially more automation and scalability, but req
 * Resource allocation
 * AlphaFold internals
 
+For large-scale screens and detailed MSA caching workflows,
+see `docs/alphafold3_optimization.md`
+
+
 For small and medium projects, AlphaFold Server remains the simplest option.
