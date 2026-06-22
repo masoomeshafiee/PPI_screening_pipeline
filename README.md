@@ -111,13 +111,14 @@ workflow:
 
 # Step 1 — Prepare Input Proteins
 
-Place raw input files (proteom FASTA) in:
+Place raw input files (proteom FASTA and the uniprot annotation) in:
 
 ```text
 data/raw/
 ```
+Update the `config/proteome_filtering_config.yaml` file to filter the proteom of interest with the desired filters (Consult `docs/proteom_filtering.md` for more information).
 
-Run protein filtering (currently supports only filtering of 1. Ribosomal proteins, 2. Membrane-bound proteins, 3. Outer membrane / cell wall synthesis, 4. periplasmics) for caulobacter organism:
+Run protein filtering:
 
 ```bash
 python src/seq_filtering/filter_proteins.py
