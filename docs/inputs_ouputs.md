@@ -90,15 +90,16 @@ Example:
 caulobacter_uniprot_annotations.tsv
 ```
 
-Used to identify proteins that should be excluded from the screen.
+Used to identify proteins that should be excluded from the screening. 
 
-Current filtering supports:
-
-* Ribosomal proteins
-* Membrane proteins
-* Outer membrane proteins
-* Cell wall synthesis proteins
-* Periplasmic proteins
+#### Important
+The required columns defined in the configs/proteome_filtering_config.yaml should exist in the uniprot annotation file. 
+Example of uniprot query:
+```text
+curl -L "https://rest.uniprot.org/uniprotkb/stream?query=proteome:UP000001364&format=tsv&fields=accession,id,gene_names,protein_name,organism_name,length,cc_subcellular_location,ft_transmem,go,go_c,go_p,go_f,keyword,sequence" \
+```
+The filtering module is a dynamic filtering method. So it supports your desired filtering. Just make sure the you configure it with
+the correct format (docs/proteom_filtering.md)
 
 ---
 
