@@ -21,3 +21,5 @@ env/
 .env
 
 data/
+
+src/__pycache__

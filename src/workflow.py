@@ -6,6 +6,7 @@ from write_af3_jsons import json_builder
 from validate_af3_jsons import validate_input
 from extract_af3_pair_scores import score_extractor
 from size_correction import size_corrector
+from bait_analysis import run_bait_analysis
 
 
 
@@ -98,6 +99,10 @@ def inject_paths(config: dict, paths: dict) -> dict:
         "corrected_aggregated_tsv": str(paths["corrected_aggregated_tsv"]),
         "correction_model_tsv": str(paths["correction_model_tsv"]),
     }
+    # Step 6: bait analysis
+    config.setdefault("bait_analysis", {})
+    config["bait_analysis"]["aggregated_result_file"] = str(paths["corrected_aggregated_tsv"])
+    config["bait_analysis"]["output_dir"] = str(paths["project_dir"] / "bait_analysis")
 
     return config
 
@@ -119,6 +124,17 @@ def validate_stage_inputs(stage: str, config: dict, paths: dict) -> None:
                 "Missing chain mapping file. Run prepare stage first: "
                 f"{paths['chain_mapping_tsv']}"
             )
+        if "bait_analysis" not in config:
+            raise KeyError("Missing 'bait_analysis' section in config.")
+        required_bait_keys = [
+        "protein_of_interest",
+        "sort_columns",
+        "score_col_for_plotting",
+        ]
+
+        for key in required_bait_keys:
+            if key not in config["bait_analysis"]:
+                raise KeyError(f"Missing bait_analysis config key: {key}")
 
 def print_prepare_summary(paths: dict) -> None:
     print("\nPrepare stage complete.")
@@ -163,7 +179,9 @@ def main() -> None:
     elif stage == "process":
         score_extractor(config)
         size_corrector(config)
+        run_bait_analysis(config)
         print_process_summary(paths)
+        
 
     elif stage == "all":
         raise NotImplementedError(
