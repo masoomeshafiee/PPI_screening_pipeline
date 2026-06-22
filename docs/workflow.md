@@ -385,3 +385,64 @@ This table can be used for:
 
 ```
 ```
+
+
+---
+
+# Phase 6 — Bait Analysis
+
+Input:
+
+```text
+pair_scores_size_corrected_aggregated.tsv
+```
+
+Output:
+
+```text
+bait_analysis/
+├── filtered_<protein_of_interest>_<sort_column>.tsv
+├── ranked_interaction_scores_<protein_of_interest>.svg
+└── score_distribution_<score_column>.svg
+```
+
+After replicate aggregation, the workflow perform bait-specific analysis.
+
+This step filters the final aggregated interaction table to keep only interactions involving a selected protein of interest. The protein of interest may appear in either `protein_1` or `protein_2`.
+
+For one-vs-all screening, this is usually the bait protein defined in the configuration file as:
+
+```yaml
+input:
+  target_id: RFA1
+```
+
+The bait-analysis step produces a ranked table of candidate interactors for the selected protein and generates summary plots to support downstream interpretation.
+
+The filtered output table is sorted using the selected score column, for example:
+
+```yaml
+sort_columns:
+  - raw_score_resolved
+```
+
+This step is useful for:
+
+* Identifying the top predicted interaction partners of a bait protein
+* Prioritizing candidates for experimental validation
+* Visualizing score distributions
+* Comparing the strongest candidates against the full bait-specific score profile
+
+The main bait-specific output is:
+
+```text
+bait_analysis/filtered_<protein_of_interest>_<sort_column>.tsv
+```
+
+For example:
+
+```text
+bait_analysis/filtered_RFA1_raw_score_resolved.tsv
+```
+
+This file can be used directly for candidate prioritization and downstream biological interpretation.

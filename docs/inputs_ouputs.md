@@ -645,3 +645,116 @@ config.yaml
 ```
 
 These files are sufficient to reproduce the entire pooled-PPI workflow.
+
+---
+
+# Phase 8 — Bait Analysis
+
+## Input
+
+### pair_scores_size_corrected_aggregated.tsv
+
+Final aggregated interaction table generated after size correction and replicate aggregation.
+
+This file is used to extract all predicted interactions involving one protein of interest.
+
+The protein of interest can appear in either:
+
+* `protein_1`
+* `protein_2`
+
+---
+
+## Outputs
+
+Bait analysis outputs are saved in:
+
+```text
+project_output/
+└── project_name/
+    └── bait_analysis/
+```
+
+---
+
+### filtered_<protein_of_interest>_<sort_column>.tsv
+
+Bait-specific ranked interaction table.
+
+This file contains only interactions involving the selected protein of interest.
+
+Example:
+
+```text
+filtered_RFA1_raw_score_resolved.tsv
+```
+
+Columns are inherited from:
+
+```text
+pair_scores_size_corrected_aggregated.tsv
+```
+
+The table is sorted by the score column selected in the configuration file, for example:
+
+```text
+raw_score_resolved
+```
+
+This file is useful for:
+
+* Identifying top predicted interactors
+* Prioritizing candidates for downstream validation
+* Inspecting all interactions involving a specific bait protein
+
+---
+
+### ranked_interaction_scores_<protein_of_interest>.svg
+
+Ranked score plot for the selected protein of interest.
+
+Example:
+
+```text
+ranked_interaction_scores_RFA1.svg
+```
+
+This plot shows the top-ranked interaction partners for the bait protein.
+
+It is useful for quickly identifying:
+
+* Highest-scoring predicted interactors
+* Score separation between top candidates
+* Candidate ranking patterns
+
+---
+
+### score_distribution_<score_column>.svg
+
+Distribution plot of the selected interaction score.
+
+Example:
+
+```text
+score_distribution_raw_score_resolved.svg
+```
+
+This plot shows the distribution of scores among all interactions involving the selected protein of interest.
+
+It is useful for:
+
+* Assessing whether a few interactions score much higher than the rest
+* Evaluating score spread
+* Choosing candidate cutoffs for downstream analysis
+
+---
+
+# Final Bait-Specific Output
+
+The main bait-analysis result is:
+
+```text
+bait_analysis/filtered_<protein_of_interest>_<sort_column>.tsv
+```
+
+This file is the recommended output for bait-specific downstream analysis and candidate prioritization.

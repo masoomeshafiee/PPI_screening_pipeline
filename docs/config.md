@@ -550,3 +550,149 @@ mean
 ```
 
 The final interaction score is the arithmetic mean across all replicate observations.
+
+
+--- 
+
+# Bait Analysis
+
+```yaml
+bait_analysis:
+  protein_of_interest: RFA1
+  sort_columns:
+    - raw_score_resolved
+  score_col_for_plotting: raw_score_resolved
+  top_n: 50
+  protein_1_col: protein_1
+  protein_2_col: protein_2
+```
+
+The bait analysis step filters the final size-corrected interaction table to keep only interactions involving one protein of interest.
+
+This step runs during the `process` stage after:
+
+* Score extraction
+* Size correction
+* Replicate aggregation
+
+It produces a bait-specific ranked interaction table and summary plots.
+
+---
+
+## protein_of_interest
+
+Protein identifier used for bait-specific filtering.
+
+Example:
+
+```yaml
+protein_of_interest: RFA1
+```
+
+Only interactions where this protein appears in either `protein_1` or `protein_2` are kept.
+
+The identifier must exactly match the protein IDs used in the final aggregated interaction table.
+
+---
+
+## sort_columns
+
+Column or columns used to rank the filtered interactions.
+
+Example:
+
+```yaml
+sort_columns:
+  - raw_score_resolved
+```
+
+The filtered bait-specific table is sorted in descending order using these columns.
+
+---
+
+## score_col_for_plotting
+
+Score column used for bait-analysis plots.
+
+Example:
+
+```yaml
+score_col_for_plotting: raw_score_resolved
+```
+
+This column is used to generate plots such as:
+
+* Ranked interaction score plot
+* Score distribution plot
+
+Usually, this should match the main ranking column used in `sort_columns`.
+
+---
+
+## top_n
+
+Number of top-ranked interactions to show in the ranked score plot.
+
+Example:
+
+```yaml
+top_n: 50
+```
+
+Smaller values make the plot easier to read.
+
+Common choices:
+
+```yaml
+top_n: 20
+top_n: 50
+top_n: 100
+```
+
+---
+
+## protein_1_col
+
+Name of the column containing the first protein in each interaction pair.
+
+Default:
+
+```yaml
+protein_1_col: protein_1
+```
+
+Usually, this does not need to be changed.
+
+---
+
+## protein_2_col
+
+Name of the column containing the second protein in each interaction pair.
+
+Default:
+
+```yaml
+protein_2_col: protein_2
+```
+
+Usually, this does not need to be changed.
+
+---
+
+## Outputs
+
+The workflow creates a bait-analysis output directory inside the project directory:
+
+```text
+output_dir/project_name/bait_analysis/
+```
+
+This directory contains:
+
+```text
+filtered_<protein_of_interest>_<sort_column>.tsv
+ranked_interaction_scores_<protein_of_interest>.svg
+score_distribution_<score_column>.svg
+```
+
+The filtered TSV contains only interactions involving the selected protein of interest, sorted by the selected score column.

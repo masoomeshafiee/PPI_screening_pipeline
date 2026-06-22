@@ -203,6 +203,16 @@ size_correction:
 aggregation:
   resolve_replicates: mean
 
+
+bait_analysis:
+  protein_of_interest: Rfa1
+  sort_columns:
+    - raw_score_resolved
+  score_col_for_plotting: raw_score_resolved
+  top_n: 50
+  protein_1_col: protein_1
+  protein_2_col: protein_2
+
 ```
 
 ---
@@ -307,6 +317,63 @@ The final ranked interaction table is:
 ```text
 pair_scores_size_corrected_aggregated.tsv
 ```
+
+---
+
+# Step 6 — Bait-Specific Analysis
+
+During the `process` stage, the workflow also performs bait-specific analysis using the final aggregated interaction table.
+
+Input:
+
+```text
+pair_scores_size_corrected_aggregated.tsv
+```
+
+Output:
+
+```text
+bait_analysis/
+├── filtered_<protein_of_interest>_<sort_column>.tsv
+├── ranked_interaction_scores_<protein_of_interest>.svg
+└── score_distribution_<score_column>.svg
+```
+
+The bait-analysis step filters the final ranked interaction table to keep only interactions involving a selected protein of interest. For one-vs-all screening, this is usually the bait protein defined by:
+
+```yaml
+input:
+  target_id: CCNA_01764
+```
+
+The bait-analysis configuration can be set in `configs/config.yaml`:
+
+```yaml
+bait_analysis:
+  protein_of_interest: CCNA_01764
+  sort_columns:
+    - raw_score_resolved
+  score_col_for_plotting: raw_score_resolved
+  top_n: 50
+  protein_1_col: protein_1
+  protein_2_col: protein_2
+```
+
+This produces a bait-specific ranked table:
+
+```text
+bait_analysis/filtered_CCNA_01764_raw_score_resolved.tsv
+```
+
+and summary plots for inspecting the strongest predicted interactors and the score distribution.
+
+This step is useful for:
+
+* Identifying top candidate interactors for a bait protein
+* Prioritizing proteins for experimental validation
+* Inspecting whether a small number of proteins score much higher than the rest
+* Generating quick visual summaries of bait-specific results
+
 
 ---
 
