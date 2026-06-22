@@ -1,0 +1,81 @@
+input:
+  annotation_file: data/raw/caulobacter_uniprot_annotations.tsv
+  fasta_file: data/raw/caulobacter_proteome.fasta
+
+output:
+  output_dir: data/processed
+  all_output: all_proteins_annotated.csv
+  candidate_csv: candidate_proteins.csv
+  excluded_csv: excluded_proteins_with_reasons.csv
+  candidate_fasta: candidate_proteins.fasta
+
+columns:
+  accession: Entry
+  gene_names: Gene Names
+
+text_columns:
+  - Entry
+  - Entry Name
+  - Gene Names
+  - Protein names
+  - Organism
+  - Subcellular location [CC]
+  - Transmembrane
+  - Gene Ontology (GO)
+  - Gene Ontology (cellular component)
+  - Gene Ontology (biological process)
+  - Gene Ontology (molecular function)
+  - Keywords
+
+filters:
+  ribosomal:
+    reason: ribosomal
+    gene_prefixes:
+      - rps
+      - rpl
+      - rpm
+    terms:
+      - ribosomal
+      - ribosome
+      - 30s ribosomal protein
+      - 50s ribosomal protein
+      - small ribosomal subunit
+      - large ribosomal subunit
+
+  membrane_bound:
+    reason: membrane_bound
+    transmembrane_column: Transmembrane
+    terms:
+      - membrane
+      - transmembrane
+      - integral membrane
+      - cell membrane
+      - cytoplasmic membrane
+      - inner membrane
+
+  outer_membrane_or_cell_wall:
+    reason: outer_membrane_or_cell_wall_synthesis
+    terms:
+      - outer membrane
+      - cell wall
+      - cell envelope
+      - peptidoglycan
+      - murein
+      - lipopolysaccharide
+      - lps biosynthesis
+      - udp-n-acetylmuramate
+      - muramoyl
+      - penicillin-binding protein
+      - glycosyltransferase involved in cell wall
+
+  periplasmic:
+    reason: periplasmic
+    terms:
+      - periplasm
+      - periplasmic
+      - periplasmic space
+
+fasta:
+  parser_format: fasta
+  rename_header_to_gene_name: true
+  require_gene_name: true
